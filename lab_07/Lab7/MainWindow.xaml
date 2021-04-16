@@ -41,7 +41,7 @@
                     <Label Content="Эксплутационные ограничения по аппаратным ресурсам" FontSize="15px" Margin="10,10,10,10" Grid.Row="3"/>
                     <Label Content="Транзакционная нагрузка" FontSize="15px" Margin="10,10,10,10" Grid.Row="4"/>
                     <Label Content="Интенсивность взаимодействия с пользователем (оперативный ввод данных)" Margin="10,10,10,10" Grid.Row="5"/>
-                    <Label Content="Эргономические характеристики, влияющие на эффективность работы конечных пользователей" Margin="10,10,10,10" Grid.Row="6"/>
+                    <Label Content="Эргономические характеристики, влияющие на эффективность&#xD;&#xA;работы конечных пользователей" Margin="5" Grid.Row="6"/>
                     <Label Content="Оперативное обновление" FontSize="15px" Margin="10,10,10,10" Grid.Row="7"/>
                     <Label Content="Сложность обработки" FontSize="15px" Margin="10,10,10,10" Grid.Row="8"/>
                     <Label Content="Повторное использование" FontSize="15px" Margin="10,10,10,10" Grid.Row="9"/>
@@ -86,7 +86,7 @@
                         <Label Content="Количество" FontSize="25px" Margin="10" />
                     </Border>
                     <Border BorderThickness="1" BorderBrush="Black" Grid.Column="3" Grid.Row="2" Grid.RowSpan="2">
-                        <TextBox x:Name="TextBox_CountEI" Text="5" Margin="10" FontSize="50px"/>
+                        <TextBox x:Name="TextBox_CountEI" Text="4" Margin="10" FontSize="50px"/>
                     </Border>
                     <Border BorderThickness="1" BorderBrush="Black" Grid.Column="3" Grid.Row="4" Grid.RowSpan="2">
                         <TextBox x:Name="TextBox_CountEO" Text="1" Margin="10" FontSize="50px"/>
