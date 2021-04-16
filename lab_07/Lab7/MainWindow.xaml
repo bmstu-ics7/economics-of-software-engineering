@@ -86,10 +86,10 @@
                         <Label Content="Количество" FontSize="25px" Margin="10" />
                     </Border>
                     <Border BorderThickness="1" BorderBrush="Black" Grid.Column="3" Grid.Row="2" Grid.RowSpan="2">
-                        <TextBox x:Name="TextBox_CountEI" Text="4" Margin="10" FontSize="50px"/>
+                        <TextBox x:Name="TextBox_CountEI" Text="5" Margin="10" FontSize="50px"/>
                     </Border>
                     <Border BorderThickness="1" BorderBrush="Black" Grid.Column="3" Grid.Row="4" Grid.RowSpan="2">
-                        <TextBox x:Name="TextBox_CountEO" Text="1" Margin="10" FontSize="50px"/>
+                        <TextBox x:Name="TextBox_CountEO" Text="2" Margin="10" FontSize="50px"/>
                     </Border>
                     <Border BorderThickness="1" BorderBrush="Black" Grid.Column="3" Grid.Row="6" Grid.RowSpan="2">
                         <TextBox x:Name="TextBox_CountEQ" Text="1" Margin="10" FontSize="50px"/>
@@ -159,16 +159,187 @@
                     <Border BorderThickness="1" BorderBrush="Black" Grid.Column="5" Grid.Row="12" Grid.RowSpan="2">
                         <Label x:Name="Label_Result" Content="" FontSize="50px" Margin="10" />
                     </Border>
-                    <Label x:Name="Label_Final" Content="" FontSize="20px" Grid.Column="2" Grid.ColumnSpan="3" Margin="10" Grid.Row="12" Grid.RowSpan="3" VerticalAlignment="Center" />
+                    <Label x:Name="Label_Final" Content="" FontSize="20px" Grid.Column="2" Grid.ColumnSpan="3" Margin="10" Grid.Row="12" Grid.RowSpan="3" VerticalAlignment="Center" FontWeight="Bold" />
                 </Grid>
             </TabItem>
-            <TabItem Header="TabItem">
+            <TabItem Header="Модель композиции и ранней разработки архитектуры">
                 <Grid Background="#FFE5E5E5">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+                    <Border BorderThickness="1" BorderBrush="Black" Grid.ColumnSpan="2">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition/>
+                                <ColumnDefinition/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                            </Grid.RowDefinitions>
+                            <Label Content="Факторы, влияющие на показатель степени в модели" FontSize="22px" Margin="5" FontWeight="Bold" Grid.ColumnSpan="2" />
+                            <Label Content="Новизна (PREC)" FontSize="20px" Margin="5" Grid.Row="1"/>
+                            <Label Content="Гибкость разработки (FLEX)" FontSize="20px" Margin="5" Grid.Row="2"/>
+                            <Label Content="Разрешение рисков в архитектуре системы (RESL)" FontSize="20px" Margin="5" Grid.Row="3"/>
+                            <Label Content="Сплоченность команды (TEAM)" FontSize="20px" Margin="5" Grid.Row="4"/>
+                            <Label Content="Уровень зрелости процесса разработки (PMAT)" FontSize="20px" Margin="5" Grid.Row="5"/>
+                            <Label x:Name="Label_P" Content="P =" FontSize="25px" Margin="5" Grid.Row="6" FontWeight="Bold" />
 
+                            <ComboBox x:Name="ComboBox_PREC" Grid.Column="1" Grid.Row="1" Margin="10" FontSize="18px" SelectionChanged="ComboBox_P_SelectionChanged">
+                                <ComboBoxItem Content="Полное отсутствие прецедентов, полностью непредсказуемый проект" />
+                                <ComboBoxItem Content="Почти полное отсутствие прецедентов, в значительной мере непредсказуемый проект" IsSelected="True" />
+                                <ComboBoxItem Content="Наличие некоторого количества прецедентов" />
+                                <ComboBoxItem Content="Общее знакомство с проектом" />
+                                <ComboBoxItem Content="Значительное знакомство с проектом" />
+                                <ComboBoxItem Content="Полное знакомство с проектом" />
+                            </ComboBox>
+
+                            <ComboBox x:Name="ComboBox_FLEX" Grid.Column="1" Grid.Row="2" Margin="10" FontSize="18px" SelectionChanged="ComboBox_P_SelectionChanged">
+                                <ComboBoxItem Content="Точный, строгий процесс разработки" />
+                                <ComboBoxItem Content="Случайные послабления в процессе" />
+                                <ComboBoxItem Content="Некоторые послабления в процессе" />
+                                <ComboBoxItem Content="Большей частью согласованный процесс" IsSelected="True" />
+                                <ComboBoxItem Content="Некоторое согласование процесса" />
+                                <ComboBoxItem Content="Заказчик определил только общие цели" />
+                            </ComboBox>
+
+                            <ComboBox x:Name="ComboBox_RESL" Grid.Column="1" Grid.Row="3" Margin="10" FontSize="18px" SelectionChanged="ComboBox_P_SelectionChanged">
+                                <ComboBoxItem Content="Малое (20%)" />
+                                <ComboBoxItem Content="Некоторое (40%)" IsSelected="True" />
+                                <ComboBoxItem Content="Частое (60%)" />
+                                <ComboBoxItem Content="В целом (75%)" />
+                                <ComboBoxItem Content="Почти полное (90%)" />
+                                <ComboBoxItem Content="Полное (100%)" />
+                            </ComboBox>
+
+                            <ComboBox x:Name="ComboBox_TEAM" Grid.Column="1" Grid.Row="4" Margin="10" FontSize="18px" SelectionChanged="ComboBox_P_SelectionChanged">
+                                <ComboBoxItem Content="Сильно затрудненное взаимодействие" />
+                                <ComboBoxItem Content="Несколько затрудненное взаимодействие" />
+                                <ComboBoxItem Content="Некоторая согласованность" IsSelected="True" />
+                                <ComboBoxItem Content="Повышенная согласованность" />
+                                <ComboBoxItem Content="Высокая согласованность" />
+                                <ComboBoxItem Content="Взаимодействие как в едином целом" />
+                            </ComboBox>
+
+                            <ComboBox x:Name="ComboBox_PMAT" Grid.Column="1" Grid.Row="5" Margin="10" FontSize="18px" SelectionChanged="ComboBox_P_SelectionChanged">
+                                <ComboBoxItem Content="Уровень 1 СММ " />
+                                <ComboBoxItem Content="Уровень 1+ СММ" IsSelected="True" />
+                                <ComboBoxItem Content="Уровень 2 СММ" />
+                                <ComboBoxItem Content="Уровень 3 СММ" />
+                                <ComboBoxItem Content="Уровень 7 СММ " />
+                                <ComboBoxItem Content="Уровень 5 СММ " />
+                            </ComboBox>
+                        </Grid>
+                    </Border>
+                    <Border BorderThickness="1" BorderBrush="Black" Grid.Row="1">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition/>
+                                <ColumnDefinition Width="2*"/>
+                                <ColumnDefinition/>
+                                <ColumnDefinition Width="2*"/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                            </Grid.RowDefinitions>
+                            <Label Content="Модель ранней разработки архитектуры" Margin="10" Grid.ColumnSpan="4" FontSize="22px" FontWeight="Bold"/>
+                            <Label Content="PERS" Margin="10" Grid.Column="0" Grid.Row="1" FontSize="25px"/>
+                            <Label Content="RCPX" Margin="10" Grid.Column="2" Grid.Row="1" FontSize="25px"/>
+                            <Label Content="RUSE" Margin="10" Grid.Column="0" Grid.Row="2" FontSize="25px"/>
+                            <Label Content="PDIF" Margin="10" Grid.Column="2" Grid.Row="2" FontSize="25px"/>
+                            <Label Content="PREX" Margin="10" Grid.Column="0" Grid.Row="3" FontSize="25px"/>
+                            <Label Content="FCIL" Margin="10" Grid.Column="2" Grid.Row="3" FontSize="25px"/>
+                            <Label Content="SCED" Margin="10" Grid.Column="0" Grid.Row="4" FontSize="25px"/>
+                            <Button x:Name="Button_EarlyArch" Content="Рассчитать" Grid.Column="2" Margin="10" Grid.Row="4" Grid.ColumnSpan="2" FontSize="25px" Click="Button_EarlyArch_Click"/>
+                            <Label x:Name="Label_EarlyArchPeople" Content="Трудозатраты(чел/мес): " Margin="10" Grid.Column="0" Grid.Row="5" Grid.ColumnSpan="2" FontSize="20px" FontWeight="Bold"/>
+                            <Label x:Name="Label_EarlyArchTime" Content="Время(мес): " Margin="10" Grid.Column="2" Grid.Row="5" Grid.ColumnSpan="2" FontSize="20px" FontWeight="Bold"/>
+                            
+                            <ComboBox x:Name="ComboBox_PERS" Grid.Column="1" Grid.Row="1" Margin="10" FontSize="20px">
+                                <ComboBoxItem Content="Очень низкий"/>
+                                <ComboBoxItem Content="Низкий" />
+                                <ComboBoxItem Content="Номинальный" IsSelected="True" />
+                                <ComboBoxItem Content="Высокий" />
+                                <ComboBoxItem Content="Очень высокий" />
+                                <ComboBoxItem Content="Сверхвысокий" />
+                            </ComboBox>
+
+                            <ComboBox x:Name="ComboBox_RCPX" Grid.Column="3" Grid.Row="1" Margin="10" FontSize="20px">
+                                <ComboBoxItem Content="Очень низкий"/>
+                                <ComboBoxItem Content="Низкий" />
+                                <ComboBoxItem Content="Номинальный" />
+                                <ComboBoxItem Content="Высокий" />
+                                <ComboBoxItem Content="Очень высокий" IsSelected="True" />
+                                <ComboBoxItem Content="Сверхвысокий" />
+                            </ComboBox>
+
+                            <ComboBox x:Name="ComboBox_RUSE" Grid.Column="1" Grid.Row="2" Margin="10" FontSize="20px">
+                                <ComboBoxItem Content="Очень низкий" IsEnabled="False" />
+                                <ComboBoxItem Content="Низкий" IsSelected="True" />
+                                <ComboBoxItem Content="Номинальный" />
+                                <ComboBoxItem Content="Высокий" />
+                                <ComboBoxItem Content="Очень высокий" />
+                                <ComboBoxItem Content="Сверхвысокий" />
+                            </ComboBox>
+
+                            <ComboBox x:Name="ComboBox_PDIF" Grid.Column="3" Grid.Row="2" Margin="10" FontSize="20px">
+                                <ComboBoxItem Content="Очень низкий" IsEnabled="False" />
+                                <ComboBoxItem Content="Низкий" />
+                                <ComboBoxItem Content="Номинальный" />
+                                <ComboBoxItem Content="Высокий" IsSelected="True" />
+                                <ComboBoxItem Content="Очень высокий" />
+                                <ComboBoxItem Content="Сверхвысокий" />
+                            </ComboBox>
+
+                            <ComboBox x:Name="ComboBox_PREX" Grid.Column="1" Grid.Row="3" Margin="10" FontSize="20px">
+                                <ComboBoxItem Content="Очень низкий"/>
+                                <ComboBoxItem Content="Низкий" IsSelected="True" />
+                                <ComboBoxItem Content="Номинальный" />
+                                <ComboBoxItem Content="Высокий" />
+                                <ComboBoxItem Content="Очень высокий" />
+                                <ComboBoxItem Content="Сверхвысокий" />
+                            </ComboBox>
+
+                            <ComboBox x:Name="ComboBox_FCIL" Grid.Column="3" Grid.Row="3" Margin="10" FontSize="20px">
+                                <ComboBoxItem Content="Очень низкий"/>
+                                <ComboBoxItem Content="Низкий" />
+                                <ComboBoxItem Content="Номинальный" />
+                                <ComboBoxItem Content="Высокий" />
+                                <ComboBoxItem Content="Очень высокий" IsSelected="True" />
+                                <ComboBoxItem Content="Сверхвысокий" />
+                            </ComboBox>
+
+                            <ComboBox x:Name="ComboBox_SCED" Grid.Column="1" Grid.Row="4" Margin="10" FontSize="20px">
+                                <ComboBoxItem Content="Очень низкий"/>
+                                <ComboBoxItem Content="Низкий" />
+                                <ComboBoxItem Content="Номинальный" />
+                                <ComboBoxItem Content="Высокий" />
+                                <ComboBoxItem Content="Очень высокий" IsSelected="True" />
+                                <ComboBoxItem Content="Сверхвысокий" IsEnabled="False" />
+                            </ComboBox>
+                        </Grid>
+                    </Border>
+                    <Border BorderThickness="1" BorderBrush="Black" Grid.Column="1" Grid.Row="1">
+                        <Grid>
+
+                        </Grid>
+                    </Border>
                 </Grid>
             </TabItem>
         </TabControl>
-        <Button x:Name="button1" Content="Button" HorizontalAlignment="Left" Margin="393,-22,0,0" VerticalAlignment="Top"/>
-
     </Grid>
 </Window>

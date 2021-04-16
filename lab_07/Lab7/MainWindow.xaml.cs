@@ -17,15 +17,48 @@ namespace Lab7
         private readonly int[] ILFLevel;
         private readonly int[] EIFLevel;
 
+        private readonly double[] PRECValue;
+        private readonly double[] FLEXValue;
+        private readonly double[] RESLValue;
+        private readonly double[] TEAMValue;
+        private readonly double[] PMATValue;
+
+        private readonly double?[] PERSLevel;
+        private readonly double?[] RCPXLevel;
+        private readonly double?[] RUSELevel;
+        private readonly double?[] PDIFLevel;
+        private readonly double?[] PREXLevel;
+        private readonly double?[] FCILLevel;
+        private readonly double?[] SCEDLevel;
+
+        private double p = 0;
+        private double size = 0;
+
         public MainWindow()
         {
+            EILevel = new int[]  { 3, 4,  6  };
+            EOLevel = new int[]  { 4, 5,  7  };
+            EQLevel = new int[]  { 3, 4,  6  };
+            ILFLevel = new int[] { 7, 10, 15 };
+            EIFLevel = new int[] { 5, 7,  10 };
+
+            PRECValue = new double[] { 6.20, 4.96, 3.72, 2.48, 1.24, 0.00 };
+            FLEXValue = new double[] { 5.07, 4.05, 3.04, 2.03, 1.01, 0.00 };
+            RESLValue = new double[] { 7.00, 5.65, 4.24, 2.83, 1.41, 0.00 };
+            TEAMValue = new double[] { 5.48, 4.38, 3.29, 2.19, 1.10, 0.00 };
+            PMATValue = new double[] { 7.00, 6.24, 4.68, 1.12, 1.56, 0.00 };
+
+            PERSLevel = new double?[] { 1.62, 1.26, 1.00, 0.83, 0.63, 0.50 };
+            RCPXLevel = new double?[] { 0.60, 0.83, 1.00, 1.33, 1.91, 2.72 };
+            RUSELevel = new double?[] { null, 0.95, 1.00, 1.07, 1.15, 1.24 };
+            PDIFLevel = new double?[] { null, 0.87, 1.00, 1.29, 1.81, 2.61 };
+            PREXLevel = new double?[] { 1.33, 1.22, 1.00, 0.87, 0.74, 0.62 };
+            FCILLevel = new double?[] { 1.30, 1.10, 1.00, 0.87, 0.73, 0.62 };
+            SCEDLevel = new double?[] { 1.43, 1.14, 1.00, 1.00, 1.00, null };
+
             InitializeComponent();
 
-            EILevel = new int[] { 3, 4, 6 };
-            EOLevel = new int[] { 4, 5, 7 };
-            EQLevel = new int[] { 3, 4, 6 };
-            ILFLevel = new int[] { 7, 10, 15 };
-            EIFLevel = new int[] { 5, 7, 10 };
+            Button_FP_Click(Button_FP, null);
         }
 
         private void Button_FP_Click(object sender, RoutedEventArgs e)
@@ -70,6 +103,8 @@ namespace Lab7
                     $"Нормированное количество функциональных точек: {Math.Round(final, 3)}\n" +
                     $"Количество функциональных точек: {res}\n" +
                     $"Количество строк исходного кода: {Math.Round(loc)}";
+
+                this.size = Math.Round(loc);
             }
             catch (FPTextBlockParseException)
             {
@@ -109,6 +144,45 @@ namespace Lab7
             }
 
             return result;
+        }
+
+        private void ComboBox_P_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            try
+            {
+                double[] parameters = new double[]
+                {
+                    PRECValue[ComboBox_PREC.SelectedIndex],
+                    FLEXValue[ComboBox_FLEX.SelectedIndex],
+                    RESLValue[ComboBox_RESL.SelectedIndex],
+                    TEAMValue[ComboBox_TEAM.SelectedIndex],
+                    PMATValue[ComboBox_PMAT.SelectedIndex],
+                };
+
+                this.p = parameters.Sum() / 100 + 1.01;
+                Label_P.Content = $"P = {this.p}";
+            }
+            catch (NullReferenceException) { }
+        }
+
+        private void Button_EarlyArch_Click(object sender, RoutedEventArgs e)
+        {
+            double[] parameters = new double[]
+            { 
+                PERSLevel[ComboBox_PERS.SelectedIndex].Value,
+                RCPXLevel[ComboBox_RCPX.SelectedIndex].Value,
+                RUSELevel[ComboBox_RUSE.SelectedIndex].Value,
+                PDIFLevel[ComboBox_PDIF.SelectedIndex].Value,
+                PREXLevel[ComboBox_PREX.SelectedIndex].Value,
+                FCILLevel[ComboBox_FCIL.SelectedIndex].Value,
+                SCEDLevel[ComboBox_SCED.SelectedIndex].Value,
+            };
+
+            double people = Math.Round(parameters.Aggregate((total, next) => total * next) * 2.45 * Math.Pow(this.size / 1000.0, this.p));
+            double time = Math.Round(3.0 * Math.Pow(people, 0.33 + 0.2 * (this.p - 1.01)));
+
+            Label_EarlyArchPeople.Content = $"Трудозатраты(чел/мес): {people}";
+            Label_EarlyArchTime.Content = $"Время(мес): {time}";
         }
     }
 }
