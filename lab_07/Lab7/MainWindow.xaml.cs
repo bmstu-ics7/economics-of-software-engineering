@@ -31,6 +31,8 @@ namespace Lab7
         private readonly double?[] FCILLevel;
         private readonly double?[] SCEDLevel;
 
+        private readonly int[] ExpLevel;
+
         private double p = 0;
         private double size = 0;
 
@@ -55,6 +57,8 @@ namespace Lab7
             PREXLevel = new double?[] { 1.33, 1.22, 1.00, 0.87, 0.74, 0.62 };
             FCILLevel = new double?[] { 1.30, 1.10, 1.00, 0.87, 0.73, 0.62 };
             SCEDLevel = new double?[] { 1.43, 1.14, 1.00, 1.00, 1.00, null };
+
+            ExpLevel = new int[] { 4, 7, 13, 25, 50 };
 
             InitializeComponent();
 
@@ -112,38 +116,8 @@ namespace Lab7
             }
             catch (FPTextBlockValueException)
             {
-                MessageBox.Show("Характеристики продукта должны быть в диапазоне от 0 до 5", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show("Характеристики продукта должны быть в диапазоне от 0 до 5, а количество >= нуля", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
             }
-        }
-
-        private int ConvertCharacteristic(TextBox text)
-        {
-            if (!int.TryParse(text.Text, out int result))
-            {
-                throw new FPTextBlockParseException();
-            }
-
-            if (result < 0 || result > 5)
-            {
-                throw new FPTextBlockValueException();
-            }
-
-            return result;
-        }
-
-        private int ConvertCount(TextBox text)
-        {
-            if (!int.TryParse(text.Text, out int result))
-            {
-                throw new FPTextBlockParseException();
-            }
-
-            if (result <= 0)
-            {
-                throw new FPTextBlockValueException();
-            }
-
-            return result;
         }
 
         private void ComboBox_P_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -183,6 +157,72 @@ namespace Lab7
 
             Label_EarlyArchPeople.Content = $"Трудозатраты(чел/мес): {people}";
             Label_EarlyArchTime.Content = $"Время(мес): {time}";
+        }
+
+        private void Button_Composition_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                int ruse = ConvertCount(TextBox_RUSE);
+                int exp = ExpLevel[ComboBox_Exp.SelectedIndex];
+
+                int easyForms = ConvertCount(TextBox_FormsEasy);
+                int normalForms = ConvertCount(TextBox_FormsNormal);
+                int hardForms = ConvertCount(TextBox_FormsHard);
+
+                int easyReport = ConvertCount(TextBox_ReportEasy);
+                int normalReport = ConvertCount(TextBox_ReportNormal);
+                int hardReport = ConvertCount(TextBox_ReportHard);
+
+                int modules = ConvertCount(TextBox_Modules);
+
+                double people = Math.Round(
+                    ((easyForms + normalForms * 2.0 + hardForms * 3.0 + easyReport * 2.0 + normalReport * 5.0 + hardReport * 8.0 + modules * 10.0)
+                    * (100.0 - ruse) / 100.0) / exp
+                );
+                double time = Math.Round(3.0 * Math.Pow(people, 0.33 + 0.2 * (this.p - 1.01)));
+
+                Label_CompositionPeople.Content = $"Трудозатраты(чел/мес): {people}";
+                Label_CompositionTime.Content = $"Время(мес): {time}";
+            }
+            catch (FPTextBlockParseException)
+            {
+                MessageBox.Show("Введите число", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+            catch (FPTextBlockValueException)
+            {
+                MessageBox.Show("Количество должно быть >= нуля", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
+        private int ConvertCharacteristic(TextBox text)
+        {
+            if (!int.TryParse(text.Text, out int result))
+            {
+                throw new FPTextBlockParseException();
+            }
+
+            if (result < 0 || result > 5)
+            {
+                throw new FPTextBlockValueException();
+            }
+
+            return result;
+        }
+
+        private int ConvertCount(TextBox text)
+        {
+            if (!int.TryParse(text.Text, out int result))
+            {
+                throw new FPTextBlockParseException();
+            }
+
+            if (result < 0)
+            {
+                throw new FPTextBlockValueException();
+            }
+
+            return result;
         }
     }
 }
