@@ -285,3 +285,7 @@ TSWLatexianTemp*
 
 # MacOS Files
 .DS_Store
+
+# Python files
+**/.ipynb_checkpoints/**
+**/env/**
