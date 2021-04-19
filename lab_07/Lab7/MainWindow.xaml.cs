@@ -2,6 +2,7 @@
 using System.Windows;
 using System.Windows.Controls;
 using System.Linq;
+using System.Collections.Generic;
 using Lab7.Exceptions;
 
 namespace Lab7
@@ -34,7 +35,8 @@ namespace Lab7
         private readonly int[] ExpLevel;
 
         private double p = 0;
-        private double size = 0;
+        private int loc = 0;
+        private List<Pair<int, int>> languages;
 
         public MainWindow()
         {
@@ -59,6 +61,12 @@ namespace Lab7
             SCEDLevel = new double?[] { 1.43, 1.14, 1.00, 1.00, 1.00, null };
 
             ExpLevel = new int[] { 4, 7, 13, 25, 50 };
+
+            languages = new List<Pair<int, int>>
+            {
+                new Pair<int, int>(85, 53),
+                new Pair<int, int>(15, 125),
+            };
 
             InitializeComponent();
 
@@ -101,14 +109,22 @@ namespace Lab7
                 Label_ResultEIF.Content = EIFres;
                 Label_Result.Content = res;
 
-                double final = res * (0.65 + 0.01 * fp.Sum());
-                double loc = final * 0.85 * 53 + final * 0.15 * 125;
+                double coeff = 0.65 + 0.01 * fp.Sum();
+                double final = res * coeff;
+
+                double loc = 0;
+                foreach (var lang in languages)
+                {
+                    loc += final * (lang.Key / 100.0) * lang.Value;
+                }
+
+                this.loc = (int)Math.Round(loc);
+
                 Label_Final.Content =
                     $"Нормированное количество функциональных точек: {Math.Round(final, 3)}\n" +
                     $"Количество функциональных точек: {res}\n" +
-                    $"Количество строк исходного кода: {Math.Round(loc)}";
-
-                this.size = Math.Round(loc);
+                    $"Количество строк исходного кода: {this.loc}\n" +
+                    $"Коэффициент: {coeff}";
             }
             catch (FPTextBlockParseException)
             {
@@ -141,28 +157,44 @@ namespace Lab7
 
         private void Button_EarlyArch_Click(object sender, RoutedEventArgs e)
         {
-            double[] parameters = new double[]
-            { 
-                PERSLevel[ComboBox_PERS.SelectedIndex].Value,
-                RCPXLevel[ComboBox_RCPX.SelectedIndex].Value,
-                RUSELevel[ComboBox_RUSE.SelectedIndex].Value,
-                PDIFLevel[ComboBox_PDIF.SelectedIndex].Value,
-                PREXLevel[ComboBox_PREX.SelectedIndex].Value,
-                FCILLevel[ComboBox_FCIL.SelectedIndex].Value,
-                SCEDLevel[ComboBox_SCED.SelectedIndex].Value,
-            };
+            try
+            {
+                int avgSalary = ConvertCount(TextBox_AvgSalary);
 
-            double people = Math.Round(parameters.Aggregate((total, next) => total * next) * 2.45 * Math.Pow(this.size / 1000.0, this.p));
-            double time = Math.Round(3.0 * Math.Pow(people, 0.33 + 0.2 * (this.p - 1.01)));
+                double[] parameters = new double[]
+                {
+                    PERSLevel[ComboBox_PERS.SelectedIndex].Value,
+                    RCPXLevel[ComboBox_RCPX.SelectedIndex].Value,
+                    RUSELevel[ComboBox_RUSE.SelectedIndex].Value,
+                    PDIFLevel[ComboBox_PDIF.SelectedIndex].Value,
+                    PREXLevel[ComboBox_PREX.SelectedIndex].Value,
+                    FCILLevel[ComboBox_FCIL.SelectedIndex].Value,
+                    SCEDLevel[ComboBox_SCED.SelectedIndex].Value,
+                };
 
-            Label_EarlyArchPeople.Content = $"Трудозатраты(чел/мес): {people}";
-            Label_EarlyArchTime.Content = $"Время(мес): {time}";
+                double people = Math.Round(parameters.Aggregate((total, next) => total * next) * 2.45 * Math.Pow(this.loc / 1000.0, this.p));
+                double time = Math.Round(3.0 * Math.Pow(people, 0.33 + 0.2 * (this.p - 1.01)));
+
+                Label_EarlyArchPeople.Content = $"Трудозатраты(чел/мес): {people}";
+                Label_EarlyArchTime.Content = $"Время(мес): {time}";
+                Label_EarlyArchBudget.Content = $"Бюджет: {people * avgSalary}";
+            }
+            catch (FPTextBlockParseException)
+            {
+                MessageBox.Show("Введите число", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+            catch (FPTextBlockValueException)
+            {
+                MessageBox.Show("Количество должно быть >= нуля", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
 
         private void Button_Composition_Click(object sender, RoutedEventArgs e)
         {
             try
             {
+                int avgSalary = ConvertCount(TextBox_AvgSalary);
+
                 int ruse = ConvertCount(TextBox_RUSE);
                 int exp = ExpLevel[ComboBox_Exp.SelectedIndex];
 
@@ -176,14 +208,14 @@ namespace Lab7
 
                 int modules = ConvertCount(TextBox_Modules);
 
-                double people = Math.Round(
-                    ((easyForms + normalForms * 2.0 + hardForms * 3.0 + easyReport * 2.0 + normalReport * 5.0 + hardReport * 8.0 + modules * 10.0)
-                    * (100.0 - ruse) / 100.0) / exp
-                );
+                double points = easyForms + normalForms * 2.0 + hardForms * 3.0 + easyReport * 2.0 + normalReport * 5.0 + hardReport * 8.0 + modules * 10.0;
+                double people = Math.Round((points * (100.0 - ruse) / 100.0) / exp);
                 double time = Math.Round(3.0 * Math.Pow(people, 0.33 + 0.2 * (this.p - 1.01)));
 
                 Label_CompositionPeople.Content = $"Трудозатраты(чел/мес): {people}";
                 Label_CompositionTime.Content = $"Время(мес): {time}";
+                Label_CompositionPoints.Content = $"Объектн. точки: {points}";
+                Label_CompositionBudget.Content = $"Бюджет: {people * avgSalary}";
             }
             catch (FPTextBlockParseException)
             {
@@ -223,6 +255,19 @@ namespace Lab7
             }
 
             return result;
+        }
+
+        private void Button_OpenLanguages_Click(object sender, RoutedEventArgs e)
+        {
+            var window = new ChooseLanguagesWindow(this.languages);
+            window.Owner = this;
+            window.ShowDialog();
+
+            if (window.DialogResult == true)
+            {
+                this.languages = window.Languages;
+                Button_FP_Click(Button_FP, null);
+            }
         }
     }
 }

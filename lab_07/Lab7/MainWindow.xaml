@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Lab7"
         mc:Ignorable="d"
-        Title="MainWindow" Height="804" Width="1466">
+        Title="COCOMO2" Height="804" Width="1466">
     <Grid>
         <TabControl x:Name="tabControl">
             <TabItem Header="Метод функциональных точек">
@@ -49,7 +49,15 @@
                     <Label Content="Легкость эксплуатации/администрирования" FontSize="15px" Margin="10,10,10,10" Grid.Row="11"/>
                     <Label Content="Портируемость" FontSize="15px" Margin="10,10,10,10" Grid.Row="12"/>
                     <Label Content="Гибкость" FontSize="15px" Margin="10,10,10,10" Grid.Row="13"/>
-                    <Button x:Name="Button_FP" Content="Рассчитать" Margin="10,10,10,10" Grid.Row="14" Grid.ColumnSpan="2" Click="Button_FP_Click" />
+                    <Grid Grid.Row="14" Grid.ColumnSpan="2">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition />
+                            <ColumnDefinition />
+                        </Grid.ColumnDefinitions>
+
+                        <Button x:Name="Button_FP" Content="Рассчитать" Margin="10,10,10,10"  Click="Button_FP_Click" />
+                        <Button x:Name="Button_OpenLanguages1" Content="Выбрать технологичесткий стек" Margin="10" Grid.Column="1" Click="Button_OpenLanguages_Click"/>
+                    </Grid>
                     <TextBox x:Name="TextBox_FP1" FontSize="20px" Grid.Column="1" Margin="10,10,10,10" Text="5" />
                     <TextBox x:Name="TextBox_FP2" FontSize="20px" Grid.Row="1" Grid.Column="1" Margin="10,10,10,10" Text="5" />
                     <TextBox x:Name="TextBox_FP3" FontSize="20px" Grid.Row="2" Grid.Column="1" Margin="10,10,10,10" Text="3" />
@@ -239,6 +247,17 @@
                                 <ComboBoxItem Content="Уровень 7 СММ " />
                                 <ComboBoxItem Content="Уровень 5 СММ " />
                             </ComboBox>
+
+                            <Grid Grid.Row="6" Grid.Column="1" >
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="2*"/>
+                                    <ColumnDefinition />
+                                    <ColumnDefinition />
+                                </Grid.ColumnDefinitions>
+                                <Button x:Name="Button_OpenLanguages2" Content="Выбрать технологичесткий стек" Margin="10,10,10,10" Click="Button_OpenLanguages_Click" />
+                                <Label Content="Средняя зарплата" Grid.Column="1" Margin="10" FontSize="18px" />
+                                <TextBox x:Name="TextBox_AvgSalary" Text="100000" FontSize="18px" Margin="10" Grid.Column="2" />
+                            </Grid>
                         </Grid>
                     </Border>
                     <Border BorderThickness="1" BorderBrush="Black" Grid.Row="1">
@@ -267,8 +286,14 @@
                             <Label Content="SCED" Margin="10" Grid.Column="0" Grid.Row="4" FontSize="25px"/>
                             <Button x:Name="Button_EarlyArch" Content="Рассчитать" Grid.Column="2" Margin="10" Grid.Row="4" Grid.ColumnSpan="2" FontSize="25px" Click="Button_EarlyArch_Click"/>
                             <Label x:Name="Label_EarlyArchPeople" Content="Трудозатраты(чел/мес): " Margin="10" Grid.Column="0" Grid.Row="5" Grid.ColumnSpan="2" FontSize="20px" FontWeight="Bold"/>
-                            <Label x:Name="Label_EarlyArchTime" Content="Время(мес): " Margin="10" Grid.Column="2" Grid.Row="5" Grid.ColumnSpan="2" FontSize="20px" FontWeight="Bold"/>
-
+                            <Grid Grid.Column="2" Grid.Row="5" Grid.ColumnSpan="2" >
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition/>
+                                    <ColumnDefinition/>
+                                </Grid.ColumnDefinitions>
+                                <Label x:Name="Label_EarlyArchTime" Content="Время(мес): " Margin="10,10,10,10" FontSize="20px" FontWeight="Bold" />
+                                <Label x:Name="Label_EarlyArchBudget" Content="Бюджет: " Margin="10,15,10,10" FontSize="14px" FontWeight="Bold" Grid.Column="1"/>
+                            </Grid>
                             <ComboBox x:Name="ComboBox_PERS" Grid.Column="1" Grid.Row="1" Margin="10" FontSize="20px">
                                 <ComboBoxItem Content="Очень низкий"/>
                                 <ComboBoxItem Content="Низкий" />
@@ -363,8 +388,10 @@
                             <Label Content="Средние" Margin="5" Grid.Row="4" Grid.Column="2" FontSize="17px" />
                             <Label Content="Сложные" Margin="5" Grid.Row="5" Grid.Column="2" FontSize="17px" />
                             <Label Content="Модули на языках&#xD;&#xA;3 поколения" Margin="5" Grid.Row="6" FontSize="9px" />
-                            <Label x:Name="Label_CompositionPeople" Content="Трудозатраты(чел/мес): " Margin="5" Grid.Row="7" Grid.ColumnSpan="2" FontSize="17px" FontWeight="Bold"/>
-                            <Label x:Name="Label_CompositionTime" Content="Время(мес): " Margin="5" Grid.Row="7" Grid.ColumnSpan="2" Grid.Column="2" FontSize="17px" FontWeight="Bold"/>
+                            <Label x:Name="Label_CompositionPeople" Content="Трудозатраты(чел/мес): " Margin="0, 10, 0, 10" Grid.Row="7" FontSize="12px" FontWeight="Bold"/>
+                            <Label x:Name="Label_CompositionTime" Content="Время(мес): " Margin="5" Grid.Row="7" Grid.Column="1" FontSize="17px" FontWeight="Bold"/>
+                            <Label x:Name="Label_CompositionPoints" Content="Объектн. точки: " Margin="5" Grid.Row="7" Grid.Column="2" FontSize="17px" FontWeight="Bold"/>
+                            <Label x:Name="Label_CompositionBudget" Content="Бюджет: " Margin="5, 7, 0, 0" Grid.Row="7" Grid.Column="3" FontSize="14px" FontWeight="Bold"/>
                             <TextBox x:Name="TextBox_RUSE" Text="0" FontSize="17px" Margin="10" Grid.Row="1" Grid.Column="1" />
                             <ComboBox x:Name="ComboBox_Exp" Margin="10" Grid.Row="1" Grid.Column="3" FontSize="15px">
                                 <ComboBoxItem Content="Очень низкая" />
